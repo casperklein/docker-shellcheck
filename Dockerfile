@@ -9,6 +9,6 @@ RUN 	apt-get update && \
 
 WORKDIR /shellcheck
 
-RUN	cabal install -j8 ShellCheck
+RUN	cabal install
 
 CMD	cp ~/.cabal/bin/shellcheck /mnt
