@@ -8,5 +8,5 @@ docker build -t shellcheck --build-arg version="$VERSION" .
 echo
 
 echo "Copy binary to $(pwd)/shellcheck"
-docker run -it -v "$(pwd)":/mnt/ shellcheck
+docker run --rm -v "$(pwd)":/mnt/ shellcheck
 echo
