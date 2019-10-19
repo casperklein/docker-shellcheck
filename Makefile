@@ -1,3 +1,4 @@
+# all targets are phony (no files to check)
 .PHONY: default build clean install uninstall
 
 default: build
