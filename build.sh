@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -ueo pipefail
+
 VERSION="$(</etc/debian_version)"
 
 echo "Building shellcheck for Debian $VERSION"
