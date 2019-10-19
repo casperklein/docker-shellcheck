@@ -4,9 +4,9 @@ VERSION="$(</etc/debian_version)"
 
 echo "Building shellcheck for Debian $VERSION"
 echo
-docker build -t shellcheck --build-arg version="$VERSION" .
+docker build -t shellcheck-builder --build-arg version="$VERSION" .
 echo
 
 echo "Copy binary to $(pwd)/shellcheck"
-docker run --rm -v "$(pwd)":/mnt/ shellcheck
+docker run --rm -v "$(pwd)":/mnt/ shellcheck-builder
 echo
