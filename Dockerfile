@@ -3,7 +3,7 @@ FROM	debian:$version-slim
 
 # Install packages
 RUN 	apt-get update \
-&&	apt-get -y install git cabal-install \
+&&	apt-get -y --no-install-recommends install git cabal-install ca-certificates \
 &&	cabal update
 
 # Get and build shellcheck
