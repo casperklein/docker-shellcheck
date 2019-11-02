@@ -1,7 +1,7 @@
 # Build shellcheck
     make
     
-# Install shellcheck
+# Install/Update shellcheck
     make install
     
 # Uninstall shellcheck
