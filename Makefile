@@ -1,5 +1,5 @@
 # all targets are phony (no files to check)
-.PHONY: default build clean install uninstall
+.PHONY: default build clean push install uninstall
 
 default: build
 
@@ -8,7 +8,10 @@ build:
 
 clean:
 	rm -f shellcheck
-	docker rmi shellcheck-builder
+	docker rmi casperklein/shellcheck-builder
+
+push:
+	docker push casperklein/shellcheck-builder
 
 install:
 	cp shellcheck /usr/local/bin/
