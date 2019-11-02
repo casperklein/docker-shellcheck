@@ -12,4 +12,4 @@ WORKDIR /shellcheck
 RUN	cabal install
 
 # Move shellcheck binary to /mnt on container start
-CMD	cp ~/.cabal/bin/shellcheck /mnt
+CMD	["/bin/cp", "/root/.cabal/bin/shellcheck", "/mnt"]

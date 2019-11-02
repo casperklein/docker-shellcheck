@@ -1,12 +1,10 @@
 #!/bin/bash
 
-set -ueo pipefail
-
 VERSION="$(</etc/debian_version)"
 
 echo "Building shellcheck for Debian $VERSION"
 echo
-docker build -t shellcheck-builder --build-arg version="$VERSION" .
+docker build -t shellcheck-builder --build-arg version="${VERSION:-10}" .
 echo
 
 echo "Copy binary to $(pwd)/shellcheck"
