@@ -17,11 +17,6 @@ RUN 	apt-get update \
 &&	cabal update
 
 # Get and build shellcheck
-RUN	git clone https://github.com/koalaman/shellcheck
-WORKDIR /shellcheck
-RUN	cabal install
-
-# Build wget2
 WORKDIR /$NAME
 RUN	git init                        # make a new blank repository
 RUN	git remote add origin $GIT_REPO # add a remote
@@ -37,8 +32,8 @@ RUN	checkinstall -y --install=no \
 			--pkgname=shellcheck \
 			--pkgversion=$VERSION \
 			--maintainer=$USER@$NAME:$VERSION \
-			--pkggroup=devel
-
+			--pkggroup=devel \
+			cabal install
 
 # Build final image
 #FROM	debian:$version-slim
