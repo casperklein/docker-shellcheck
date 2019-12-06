@@ -1,17 +1,22 @@
 # all targets are phony (no files to check)
 .PHONY: default build clean install uninstall
 
+USER := $(shell grep -P 'ENV\s+USER=".+?"' Dockerfile | cut -d'"' -f2)
+NAME := $(shell grep -P 'ENV\s+NAME=".+?"' Dockerfile | cut -d'"' -f2)
+VERSION := $(shell grep -P 'ENV\s+VERSION=".+?"' Dockerfile | cut -d'"' -f2)
+
 default: build
 
 build:
 	./build.sh
 
 clean:
-	rm -f shellcheck
-	docker rmi shellcheck-builder
+	rm -f shellcheck_$(VERSION)-1*.deb
+	docker rmi $(USER)/$(NAME):$(VERSION); \
+	docker rmi $(USER)/$(NAME):latest
 
 install:
-	cp shellcheck /usr/local/bin/
+	dpkg -i shellcheck_$(VERSION)-1*.deb
 
 uninstall:
-	rm -f /usr/local/bin/shellcheck
+	apt-get purge shellcheck

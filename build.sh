@@ -1,12 +1,20 @@
 #!/bin/bash
 
-VERSION="$(</etc/debian_version)"
+set -ueo pipefail
 
-echo "Building shellcheck for Debian $VERSION"
-echo
-docker build -t shellcheck-builder --build-arg version="${VERSION:-10}" .
-echo
+USER=$(grep -P 'ENV\s+USER=".+?"' Dockerfile | cut -d'"' -f2)
+NAME=$(grep -P 'ENV\s+NAME=".+?"' Dockerfile | cut -d'"' -f2)
+VERSION=$(grep -P 'ENV\s+VERSION=".+?"' Dockerfile | cut -d'"' -f2)
+TAG="$USER/$NAME:$VERSION"
 
-echo "Copy shellcheck binary to $(pwd)/shellcheck"
-docker run --rm -v "$(pwd)":/mnt/ shellcheck-builder
+DIR=${0%/*}
+cd "$DIR"
+
+echo "Building: $NAME $VERSION"
+echo
+docker build -t "$TAG" .
+docker tag "$TAG" "$USER/$NAME:latest"
+
+echo "Copy $NAME $VERSION debian package to $(pwd)/"
+docker run --rm -v "$(pwd)":/mnt/ "$TAG"
 echo
