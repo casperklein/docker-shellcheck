@@ -8,7 +8,7 @@ VERSION := $(shell grep -P 'ENV\s+VERSION=".+?"' Dockerfile | cut -d'"' -f2)
 default: build
 
 build:
-	./build.sh
+	./build-deb.sh
 
 clean:
 	rm -f shellcheck_$(VERSION)-1*.deb
