@@ -7,6 +7,8 @@ NAME=$(grep -P 'ENV\s+NAME=".+?"' Dockerfile | cut -d'"' -f2)
 VERSION=$(grep -P 'ENV\s+VERSION=".+?"' Dockerfile | cut -d'"' -f2)
 TAG="$USER/$NAME:$VERSION"
 
+NAME=${NAME//-builder}
+
 DIR=${0%/*}
 cd "$DIR"
 
