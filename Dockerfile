@@ -10,7 +10,7 @@ ENV	GROUP="devel"
 ENV	PACKAGES="cabal-install ca-certificates"
 
 ENV	GIT_COMMIT="b7b4d5d29e401858074b0d36d7bb53da58c3932d"
-ENV	GIT_ARCHIVE="https://github.com/koalaman/shellcheck/archive/$COMMIT.tar.gz"
+ENV	GIT_ARCHIVE="https://github.com/koalaman/shellcheck/archive/$GIT_COMMIT.tar.gz"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
