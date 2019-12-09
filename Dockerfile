@@ -4,40 +4,44 @@ FROM	debian:$version-slim as build
 ENV	USER="casperklein"
 ENV	NAME="shellcheck-builder"
 ENV	VERSION="0.7.0"
+ENV	APP="shellcheck"
+ENV	GROUP="devel"
 
-ENV	GIT_REPO="https://github.com/koalaman/shellcheck"
+ENV	PACKAGES="cabal-install ca-certificates"
+
 ENV	GIT_COMMIT="b7b4d5d29e401858074b0d36d7bb53da58c3932d"
+ENV	GIT_ARCHIVE="https://github.com/koalaman/shellcheck/archive/$COMMIT.tar.gz"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install packages
 RUN	apt-get update \
-&&	apt-get -y --no-install-recommends install git cabal-install ca-certificates \
-&&	cabal update
+&&	apt-get -y --no-install-recommends install $PACKAGES
+RUN	cabal update
 
 # Get and build shellcheck
 WORKDIR	/$NAME
-RUN	git init                        # make a new blank repository
-RUN	git remote add origin $GIT_REPO # add a remote
-RUN	git fetch origin $GIT_COMMIT    # fetch commit of interest
-RUN	git reset --hard FETCH_HEAD     # reset this repository's master branch to the commit of interest
+ADD	$GIT_ARCHIVE /$NAME
+RUN	tar xzvf $GIT_COMMIT.tar.gz
+WORKDIR	/$NAME/$APP-$GIT_COMMIT
 RUN	cabal install
 
 # Copy root filesystem
 COPY	rootfs /
 
 # Prepare debian package build
-WORKDIR	/deb
+# see also rootfs/shellcheck/Makefile
+WORKDIR	/shellcheck
 RUN	mv /root/.cabal/bin/shellcheck .
 RUN	echo 'ShellCheck, a static analysis tool for shell scripts' > description-pak
 
 # Create debian package with checkinstall
 RUN	apt-get install -y --no-install-recommends file dpkg-dev && dpkg -i /checkinstall_1.6.2-4_amd64.deb
 RUN	checkinstall -y --install=no \
-			--pkgname=shellcheck \
+			--pkgname=$APP \
 			--pkgversion=$VERSION \
-			--maintainer=$USER@$NAME:$VERSION \
-			--pkggroup=devel
+			--maintainer=$USER@$NAME \
+			--pkggroup=$GROUP
 
 # Move debian package to /mnt on container start
-CMD	mv shellcheck_${VERSION}*.deb /mnt
+CMD	mv ${APP}_${VERSION}-1_*.deb /mnt

@@ -3,20 +3,20 @@
 
 USER := $(shell grep -P 'ENV\s+USER=".+?"' Dockerfile | cut -d'"' -f2)
 NAME := $(shell grep -P 'ENV\s+NAME=".+?"' Dockerfile | cut -d'"' -f2)
+APP := $(shell grep -P 'ENV\s+NAME=".+?"' Dockerfile | cut -d'"' -f2 | cut -d'-' -f1)
 VERSION := $(shell grep -P 'ENV\s+VERSION=".+?"' Dockerfile | cut -d'"' -f2)
 
 default: build
 
 build:
-	./build-deb.sh
+	@./build-deb.sh "$(debian)"
 
 clean:
-	rm -f shellcheck_$(VERSION)-1*.deb
-	docker rmi $(USER)/$(NAME):$(VERSION); \
-	docker rmi $(USER)/$(NAME):latest
+	rm -f $(APP)_$(VERSION)-1_*.deb
+	docker rmi $(USER)/$(NAME):$(VERSION)
 
 install:
-	dpkg -i shellcheck_$(VERSION)-1*.deb
+	dpkg -i $(APP)_$(VERSION)-1_*.deb
 
 uninstall:
-	apt-get purge shellcheck
+	apt-get purge $(APP)
