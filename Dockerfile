@@ -33,7 +33,7 @@ COPY	rootfs /
 # see also rootfs/shellcheck/Makefile
 WORKDIR	/shellcheck
 RUN	mv /root/.cabal/bin/shellcheck .
-RUN	echo 'ShellCheck, a static analysis tool for shell scripts' > description-pak
+RUN	echo 'ShellCheck, a static analysis tool for shell scripts.' > description-pak
 
 # Create debian package with checkinstall
 RUN	apt-get install -y --no-install-recommends file dpkg-dev && dpkg -i /checkinstall_1.6.2-4_amd64.deb
