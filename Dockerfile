@@ -3,13 +3,13 @@ FROM	debian:$version-slim as build
 
 ENV	USER="casperklein"
 ENV	NAME="shellcheck-builder"
-ENV	VERSION="0.7.0"
+ENV	VERSION="0.7.1"
 ENV	APP="shellcheck"
 ENV	GROUP="devel"
 
 ENV	PACKAGES="cabal-install ca-certificates"
 
-ENV	GIT_COMMIT="b7b4d5d29e401858074b0d36d7bb53da58c3932d"
+ENV	GIT_COMMIT="f7547c9a5ad0cec60f7b765881051bf4a56d8a80"
 ENV	GIT_ARCHIVE="https://github.com/koalaman/shellcheck/archive/$GIT_COMMIT.tar.gz"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
