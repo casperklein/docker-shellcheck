@@ -36,8 +36,8 @@ RUN	mv /root/.cabal/bin/shellcheck .
 RUN	echo 'ShellCheck, a static analysis tool for shell scripts.' > description-pak
 
 # Create debian package with checkinstall
-RUN	MASCHINE=$(uname -m);   \
-	case "$MASCHINE" in     \
+RUN	MACHINE=$(uname -m);   \
+	case "$MACHINE" in     \
 	x86_64)                 \
 		ARCH="amd64"    \
 		;;              \
