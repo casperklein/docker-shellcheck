@@ -21,10 +21,12 @@ RUN	apt-get update \
 &&	apt-get -y --no-install-recommends install $PACKAGES
 RUN	cabal update
 
-# Get and build shellcheck
+# Download source
 WORKDIR	/$NAME
 ADD	$GIT_ARCHIVE /
 RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
+
+# Build shellcheck
 RUN	cabal install
 
 # Copy root filesystem
