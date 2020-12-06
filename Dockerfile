@@ -9,8 +9,10 @@ ENV	GROUP="devel"
 
 ENV	PACKAGES="cabal-install ca-certificates"
 
+ENV	GIT_USER="koalaman"
+ENV	GIT_REPO="shellcheck"
 ENV	GIT_COMMIT="f7547c9a5ad0cec60f7b765881051bf4a56d8a80"
-ENV	GIT_ARCHIVE="https://github.com/koalaman/shellcheck/archive/$GIT_COMMIT.tar.gz"
+ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
@@ -21,9 +23,8 @@ RUN	cabal update
 
 # Get and build shellcheck
 WORKDIR	/$NAME
-ADD	$GIT_ARCHIVE /$NAME
-RUN	tar xzvf $GIT_COMMIT.tar.gz
-WORKDIR	/$NAME/$APP-$GIT_COMMIT
+ADD	$GIT_ARCHIVE /
+RUN	tar --strip-component 1 -xzvf /$GIT_COMMIT.tar.gz && rm /$GIT_COMMIT.tar.gz
 RUN	cabal install
 
 # Copy root filesystem
@@ -36,8 +37,8 @@ RUN	mv /root/.cabal/bin/shellcheck .
 RUN	echo 'ShellCheck, a static analysis tool for shell scripts.' > description-pak
 
 # Create debian package with checkinstall
-RUN	MACHINE=$(uname -m);   \
-	case "$MACHINE" in     \
+RUN	MACHINE=$(uname -m);    \
+	case "$MACHINE" in      \
 	x86_64)                 \
 		ARCH="amd64"    \
 		;;              \
