@@ -1,0 +1,6 @@
+{
+  "user": "casperklein",
+  "name": "docker-shellcheck-builder",
+  "image": "casperklein/docker-shellcheck-builder",
+  "version": "0.7.1"
+}
