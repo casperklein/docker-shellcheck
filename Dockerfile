@@ -30,12 +30,12 @@ RUN	cabal update \
 &&	mv /root/.cabal/bin/shellcheck .
 
 # Create debian package with checkinstall
-RUN	echo 'ShellCheck, a static analysis tool for shell scripts.' > description-pak
 ENV	APP="shellcheck"
 ENV	MAINTAINER="casperklein@docker-shellcheck-builder"
 ENV	GROUP="admin"
 ARG	VERSION
-RUN	checkinstall -y --install=no			\
+RUN	echo 'ShellCheck, a static analysis tool for shell scripts.' > description-pak \
+&&	checkinstall -y --install=no			\
 			--pkgname=$APP			\
 			--pkgversion=$VERSION		\
 			--maintainer=$MAINTAINER	\
