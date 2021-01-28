@@ -14,7 +14,8 @@ ENV	DEBIAN_FRONTEND=noninteractive
 RUN	echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list \
 &&	apt-get update \
 &&	apt-get -y upgrade \
-&&	apt-get -y --no-install-recommends install $PACKAGES
+&&	apt-get -y --no-install-recommends install $PACKAGES \
+&&	rm -rf /var/lib/apt/lists/*
 
 # Download source
 WORKDIR	/$GIT_REPO
@@ -42,4 +43,4 @@ RUN	echo 'ShellCheck, a static analysis tool for shell scripts.' > description-p
 			--pkggroup=$GROUP
 
 # Move debian package to /mnt on container start
-CMD	mv ${APP}_*.deb /mnt
+CMD	["mv", "${APP}_*.deb", "/mnt"]
