@@ -43,4 +43,4 @@ RUN	echo 'ShellCheck, a static analysis tool for shell scripts.' > description-p
 			--pkggroup=$GROUP
 
 # Move debian package to /mnt on container start
-CMD	["mv", "${APP}_*.deb", "/mnt"]
+CMD	["bash", "-c", "mv ${APP}_*.deb /mnt"]
