@@ -1,8 +1,8 @@
-FROM	debian:10-slim as build
+FROM	debian:11-slim as build
 
 ENV	GIT_USER="koalaman"
 ENV	GIT_REPO="shellcheck"
-ENV	GIT_COMMIT="f7547c9a5ad0cec60f7b765881051bf4a56d8a80"
+ENV	GIT_COMMIT="v0.8.0"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
 ENV	PACKAGES="file checkinstall dpkg-dev cabal-install ca-certificates"
@@ -11,8 +11,7 @@ SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install packages
 ENV	DEBIAN_FRONTEND=noninteractive
-RUN	echo 'deb http://deb.debian.org/debian buster-backports main' > /etc/apt/sources.list.d/buster-backports.list \
-&&	apt-get update \
+RUN	apt-get update \
 &&	apt-get -y upgrade \
 &&	apt-get -y --no-install-recommends install $PACKAGES \
 &&	rm -rf /var/lib/apt/lists/*
@@ -27,8 +26,8 @@ COPY	rootfs /
 
 # Build shellcheck
 RUN	cabal update \
-&&	cabal install \
-&&	mv /root/.cabal/bin/shellcheck .
+&&	cabal install --installdir /sc \
+&&	mv /sc/shellcheck .
 
 # Create debian package with checkinstall
 ENV	APP="shellcheck"
