@@ -2,7 +2,7 @@ FROM	debian:11-slim as build
 
 ENV	GIT_USER="koalaman"
 ENV	GIT_REPO="shellcheck"
-ENV	GIT_COMMIT="v0.8.0"
+ENV	GIT_COMMIT="v0.9.0"
 ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
 ENV	PACKAGES="file checkinstall dpkg-dev cabal-install ca-certificates"
