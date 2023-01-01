@@ -1,16 +1,16 @@
 FROM	debian:11-slim as build
 
-ENV	GIT_USER="koalaman"
-ENV	GIT_REPO="shellcheck"
-ENV	GIT_COMMIT="v0.9.0"
-ENV	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
+ARG	GIT_USER="koalaman"
+ARG	GIT_REPO="shellcheck"
+ARG	GIT_COMMIT="v0.9.0"
+ARG	GIT_ARCHIVE="https://github.com/$GIT_USER/$GIT_REPO/archive/$GIT_COMMIT.tar.gz"
 
-ENV	PACKAGES="file checkinstall dpkg-dev cabal-install ca-certificates"
+ARG	PACKAGES="file checkinstall dpkg-dev cabal-install ca-certificates"
 
 SHELL	["/bin/bash", "-o", "pipefail", "-c"]
 
 # Install packages
-ENV	DEBIAN_FRONTEND=noninteractive
+ARG	DEBIAN_FRONTEND=noninteractive
 RUN	apt-get update \
 &&	apt-get -y upgrade \
 &&	apt-get -y --no-install-recommends install $PACKAGES \
@@ -30,10 +30,11 @@ RUN	cabal update \
 &&	mv /sc/shellcheck .
 
 # Create debian package with checkinstall
-ENV	APP="shellcheck"
-ENV	MAINTAINER="casperklein@docker-shellcheck-builder"
-ENV	GROUP="admin"
-ARG	VERSION
+ARG	APP="shellcheck"
+ARG	GROUP="admin"
+ARG	MAINTAINER="casperklein@docker-shellcheck-builder"
+ARG	VERSION="unknown"
+
 RUN	echo 'ShellCheck, a static analysis tool for shell scripts.' > description-pak \
 &&	checkinstall -y --install=no			\
 			--pkgname=$APP			\
@@ -43,3 +44,8 @@ RUN	echo 'ShellCheck, a static analysis tool for shell scripts.' > description-p
 
 # Move debian package to /mnt on container start
 CMD	["bash", "-c", "mv ${APP}_*.deb /mnt"]
+
+LABEL	org.opencontainers.image.description="Build shellcheck and create debian package"
+LABEL	org.opencontainers.image.source="https://github.com/casperklein/docker-shellcheck-builder/"
+LABEL	org.opencontainers.image.title="docker-shellcheck-builder"
+LABEL	org.opencontainers.image.version="$VERSION"
